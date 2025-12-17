@@ -1,66 +1,94 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>Simulación de Seguridad</title>
+  <meta charset="UTF-8">
+  <title>Security Simulation</title>
   <style>
     body {
       background: #000;
       color: #00ff9c;
       font-family: monospace;
-      text-align: center;
-      padding-top: 15vh;
+      padding: 40px;
     }
+
     .terminal {
-      width: 80%;
-      max-width: 600px;
+      max-width: 800px;
       margin: auto;
       border: 2px solid #00ff9c;
       padding: 20px;
-      box-shadow: 0 0 20px #00ff9c55;
+      box-shadow: 0 0 25px #00ff9c55;
     }
-    .blink {
+
+    .line {
+      white-space: pre;
+      margin: 6px 0;
+    }
+
+    .cursor::after {
+      content: "_";
       animation: blink 1s infinite;
     }
+
     @keyframes blink {
       50% { opacity: 0; }
     }
-    button {
-      margin-top: 20px;
-      background: #00ff9c;
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    #real {
+
+    #final {
       display: none;
       color: #fff;
       margin-top: 20px;
-      font-size: 14px;
+      border-top: 1px solid #00ff9c;
+      padding-top: 15px;
     }
   </style>
 </head>
 <body>
 
-  <div class="terminal">
-    <p>> Inicializando auditoría de seguridad<span class="blink">_</span></p>
-    <p>> Analizando comportamiento del usuario...</p>
-    <p>> Resultado: curiosidad detectada</p>
+<div class="terminal">
+  <div id="output"></div>
+  <div class="line cursor"></div>
 
-    <button onclick="document.getElementById('real').style.display='block'">
-      Mostrar informe
-    </button>
-
-    <div id="real">
-      <p><strong>Esto es una simulación educativa.</strong></p>
-      <p>No se recopiló información.</p>
-      <p>No se realizó ningún ataque.</p>
-      <p>Lección: evita abrir enlaces de origen desconocido.</p>
-    </div>
+  <div id="final">
+    <p><strong>Simulación completada.</strong></p>
+    <p>Esto es una demostración visual de ingeniería social.</p>
+    <p>No se recopiló información.</p>
+    <p>No se realizó ningún acceso real.</p>
+    <p>Conclusión: no abras enlaces de origen desconocido.</p>
   </div>
+</div>
+
+<script>
+  const lines = [
+    "[+] Inicializando entorno de auditoría...",
+    "[+] Cargando módulos de análisis...",
+    "[+] Estableciendo contexto de usuario...",
+    "[+] Verificando interacción...",
+    "[+] Simulación de flujo completada",
+    "[✓] Resultado: curiosidad confirmada"
+  ];
+
+  const output = document.getElementById("output");
+  const final = document.getElementById("final");
+
+  let index = 0;
+
+  function addLine() {
+    if (index < lines.length) {
+      const div = document.createElement("div");
+      div.className = "line";
+      div.textContent = lines[index];
+      output.appendChild(div);
+      index++;
+      setTimeout(addLine, 900);
+    } else {
+      setTimeout(() => {
+        final.style.display = "block";
+      }, 1200);
+    }
+  }
+
+  addLine();
+</script>
 
 </body>
-</html>
 </html>
