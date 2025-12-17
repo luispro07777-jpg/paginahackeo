@@ -1,159 +1,219 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Security Simulation</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Simulación de Seguridad</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
-    :root {
-      --g: #00ff9c;
-      --g-dim: #00ff9c55;
-      --w: #eaeaea;
-      --bg: #000;
+    :root{
+      --verde:#00ff9c;
+      --verde-suave:#00ff9c55;
+      --blanco:#eaeaea;
+      --fondo:#000;
     }
-    * { box-sizing: border-box; }
-    body {
-      background: radial-gradient(1200px 600px at 50% -20%, #042, var(--bg));
-      color: var(--g);
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 600px at 50% -30%, #043, var(--fondo)),
+        repeating-linear-gradient(
+          0deg,
+          rgba(255,255,255,0.02),
+          rgba(255,255,255,0.02) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+      color:var(--verde);
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      padding: 24px;
-      overflow: hidden;
-    }
-    .frame {
-      max-width: 900px;
-      margin: 5vh auto;
-      border: 2px solid var(--g);
-      box-shadow: 0 0 40px var(--g-dim);
-      padding: 18px;
-      position: relative;
-    }
-    .scan {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: linear-gradient(transparent, rgba(0,255,156,.06), transparent);
-      animation: scan 3.5s linear infinite;
-      mix-blend-mode: screen;
-    }
-    @keyframes scan { from { transform: translateY(-100%);} to { transform: translateY(100%);} }
-
-    .header {
-      display: flex; gap: 10px; align-items: center; margin-bottom: 10px;
-      color: var(--w);
-    }
-    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--g); box-shadow: 0 0 8px var(--g); }
-    .title { opacity: .9; }
-
-    .terminal {
-      min-height: 260px;
-      white-space: pre-wrap;
-      line-height: 1.35;
-    }
-    .cursor::after {
-      content: "▮";
-      margin-left: 4px;
-      animation: blink 1s steps(1) infinite;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
-
-    .bar {
-      margin: 8px 0 14px;
-      height: 10px;
-      border: 1px solid var(--g);
-      position: relative;
-    }
-    .bar > i {
-      position: absolute; inset: 0;
-      width: 0%;
-      background: linear-gradient(90deg, var(--g), #7dffd6);
-      box-shadow: 0 0 10px var(--g-dim);
-      transition: width .4s ease;
+      padding:20px;
+      overflow:hidden;
     }
 
-    .final {
-      display: none;
-      margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px solid var(--g);
-      color: var(--w);
-    }
-    .hint {
-      opacity: .75; font-size: 13px; margin-top: 6px;
+    .marco{
+      max-width:960px;
+      margin:6vh auto;
+      border:2px solid var(--verde);
+      box-shadow:0 0 45px var(--verde-suave);
+      padding:18px;
+      position:relative;
+      background:rgba(0,0,0,.85);
     }
 
-    /* micro-glitch */
-    .glitch {
-      animation: glitch 1.2s linear infinite;
-      text-shadow: 1px 0 var(--g), -1px 0 #0ff;
+    /* línea de escaneo */
+    .scan{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        transparent,
+        rgba(0,255,156,.08),
+        transparent
+      );
+      animation:scan 4s linear infinite;
+      pointer-events:none;
+      mix-blend-mode:screen;
     }
-    @keyframes glitch {
-      0%, 100% { transform: translate(0); }
-      20% { transform: translate(-1px, 0); }
-      40% { transform: translate(1px, 0); }
-      60% { transform: translate(0, 1px); }
-      80% { transform: translate(0, -1px); }
+    @keyframes scan{
+      from{ transform:translateY(-100%); }
+      to{ transform:translateY(100%); }
+    }
+
+    .cabecera{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:var(--blanco);
+      margin-bottom:10px;
+      opacity:.9;
+    }
+
+    .led{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--verde);
+      box-shadow:0 0 10px var(--verde);
+      animation:pulse 1.6s infinite;
+    }
+    @keyframes pulse{
+      50%{ opacity:.4; }
+    }
+
+    .titulo{
+      letter-spacing:1px;
+      font-size:14px;
+    }
+
+    .terminal{
+      min-height:300px;
+      white-space:pre-wrap;
+      line-height:1.4;
+      font-size:15px;
+    }
+
+    .cursor::after{
+      content:"▮";
+      margin-left:4px;
+      animation:blink 1s steps(1) infinite;
+    }
+    @keyframes blink{
+      50%{ opacity:0; }
+    }
+
+    .barra{
+      margin:12px 0 16px;
+      height:10px;
+      border:1px solid var(--verde);
+      position:relative;
+      overflow:hidden;
+    }
+    .barra i{
+      position:absolute;
+      inset:0;
+      width:0%;
+      background:linear-gradient(90deg, var(--verde), #7dffd6);
+      box-shadow:0 0 12px var(--verde-suave);
+      transition:width .5s ease;
+    }
+
+    /* micro glitch */
+    .glitch{
+      animation:glitch .15s steps(2) 2;
+      text-shadow:1px 0 var(--verde), -1px 0 #0ff;
+    }
+    @keyframes glitch{
+      0%{ transform:translate(0); }
+      50%{ transform:translate(-1px,1px); }
+      100%{ transform:translate(1px,-1px); }
+    }
+
+    .final{
+      display:none;
+      margin-top:14px;
+      padding-top:12px;
+      border-top:1px solid var(--verde);
+      color:var(--blanco);
+      animation:fadein 1.2s ease;
+    }
+    @keyframes fadein{
+      from{ opacity:0; }
+      to{ opacity:1; }
+    }
+
+    .nota{
+      font-size:13px;
+      opacity:.75;
+      margin-top:6px;
     }
   </style>
 </head>
 <body>
 
-<div class="frame">
+<div class="marco">
   <div class="scan"></div>
 
-  <div class="header">
-    <div class="dot"></div>
-    <div class="title">SECURITY SIMULATION · VISUAL DEMO</div>
+  <div class="cabecera">
+    <div class="led"></div>
+    <div class="titulo">SIMULACIÓN CINEMATOGRÁFICA · SISTEMA DE SEGURIDAD</div>
   </div>
 
-  <div id="term" class="terminal cursor"></div>
+  <div id="terminal" class="terminal cursor"></div>
 
-  <div class="bar"><i id="bar"></i></div>
+  <div class="barra"><i id="progreso"></i></div>
 
   <div id="final" class="final">
     <p><strong>Simulación completada.</strong></p>
-    <p>Esto es una demostración cinematográfica de ingeniería social.</p>
-    <p>No se recopiló información. No se realizó acceso real.</p>
-    <p class="hint">Lección: evita abrir enlaces de origen desconocido.</p>
+    <p>Esto es una demostración visual de ingeniería social y percepción de riesgo.</p>
+    <p>No se recopiló información. No se ejecutó ningún acceso real.</p>
+    <p class="nota">Lección: desconfía de enlaces de origen desconocido.</p>
   </div>
 </div>
 
 <script>
-  const lines = [
-    "[+] Bootstrapping secure sandbox...",
-    "[+] Loading visual modules...",
-    "[+] Establishing user context...",
-    "[+] Monitoring interaction patterns...",
-    "[+] Rendering narrative sequence...",
-    "[✓] Simulation flow completed"
+  const lineas = [
+    "[+] Inicializando entorno aislado...",
+    "[+] Cargando módulos visuales...",
+    "[+] Estableciendo contexto de sesión...",
+    "[+] Analizando interacción del usuario...",
+    "[+] Ejecutando secuencia narrativa...",
+    "[✓] Flujo de simulación finalizado"
   ];
 
-  const term = document.getElementById("term");
-  const bar = document.getElementById("bar");
+  const term = document.getElementById("terminal");
+  const prog = document.getElementById("progreso");
   const final = document.getElementById("final");
 
   let li = 0, ci = 0;
-  const speed = 24;
+  const velocidad = 22;
 
-  function typeLine() {
-    if (li >= lines.length) {
+  function escribir(){
+    if(li >= lineas.length){
       term.classList.remove("cursor");
-      setTimeout(() => final.style.display = "block", 600);
+      setTimeout(()=> final.style.display="block", 700);
       return;
     }
-    const line = lines[li];
-    if (ci < line.length) {
-      term.textContent += line[ci++];
-      setTimeout(typeLine, speed);
+
+    const linea = lineas[li];
+
+    if(ci < linea.length){
+      term.textContent += linea[ci++];
+      setTimeout(escribir, velocidad);
     } else {
       term.textContent += "\n";
-      ci = 0; li++;
-      bar.style.width = Math.min(100, li * 18) + "%";
-      bar.classList.toggle("glitch", li % 2 === 0);
-      setTimeout(typeLine, 380);
+      ci = 0;
+      li++;
+
+      prog.style.width = Math.min(100, li * 17) + "%";
+      term.classList.add("glitch");
+      setTimeout(()=> term.classList.remove("glitch"), 120);
+
+      setTimeout(escribir, 420);
     }
   }
 
-  typeLine();
+  escribir();
 </script>
 
 </body>
